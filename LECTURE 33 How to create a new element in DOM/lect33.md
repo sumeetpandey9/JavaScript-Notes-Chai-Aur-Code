@@ -1,0 +1,1 @@
+![alt text](lec33.png)

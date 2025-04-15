@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chai aur Code | DOM</title>
+</head>
+<body style="background-color: #212121; color: #fff;">
+    <ul class="language">
+        <li>JavaScript</li>
+    </ul>
+</body>
+<script>
+
+    //Add
+    function addLanguage(langName){
+        const li = document.createElement('li')
+        li.innerHTML = `${langName}`
+        document.querySelector('.language').appendChild(li)
+    }
+    addLanguage('Python')
+    addLanguage('typescript')
+
+    //above function is okay, but it is not optmized. Everytime function is called it traverse whole tree structure. So we can optimize function
+    function adddOptiLanguage(langName){
+        const li = document.createElement('li')
+        li.appendChild(document.createTextNode(langName))
+        document.querySelector('.language').appendChild(li)
+    }
+    adddOptiLanguage("golang")
+
+    //Edit
+    const secondLang = document.querySelector('li:nth-child(2)')
+    console.log(secondLang)
+    const newli = document.createElement('li')
+    newli.textContent = "Mojo" //newli.innerHTML = "Mojo"
+    secondLang.replaceWith(newli) //replace python with 'Mojo'
+
+    //Edit
+    const firstLang = document.querySelector('li:first-child')
+    // const new_li = document.createElement('li')
+    // new_li.innerHTML = "Typescript"
+    // firstLang.replaceWith(new_li)
+    firstLang.outerHTML = '<li>Typescript</li>' //other method
+
+    //Remove
+    const lastLang = document.querySelector('li:last-child')
+    lastLang.remove()
+
+
+</script>
+</html>

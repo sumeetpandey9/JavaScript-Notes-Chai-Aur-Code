@@ -1,0 +1,83 @@
+<!--
+A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). In other words, a closure gives you access to an outer function's scope from an inner function. In JavaScript, closures are created every time a function is created, at function creation time.
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closure</title>
+</head>
+<body style="background-color: #313131;">
+    <button id="orange">Orange</button>
+    <button id="green">Green</button>
+
+    
+</body>
+<script>
+    //Lexical scoping: username of outer function can be accessed by inner function
+    function outer(){
+        let username = "chai"
+        function inner(){
+            console.log("Inner:",username);
+        }
+        inner()
+    }
+    outer()
+    //console.log("TOO OUTER:", username); //here username cant be accessed. Out of scope
+
+
+    //CLOSURE concept:
+    function makeFunc(){
+        const name = "Mozilla"
+        function displayName(){
+            console.log(name)
+        }
+        return displayName;
+    }
+
+    const myFunc = makeFunc()
+    myFunc()
+
+    /*
+    - jab displayName return krenge toh sirf displayName ka reference nh jyega, uska outer function bhi if exist krta h, uska bhi pura scope jayega. Because of Lexical Scoping.
+    - Sirf execution context nahi jaata hai , pura ka pura lexical scope jata hai
+    - Closure ka matlab hai jab aap pura ka pura function hi return kr dete ho toh sirf function return nh hota h, Lexical scope return hota hai
+    */
+</script>
+
+<!--Note : you can write as many script tag as you want-->
+<script>
+    // document.getElementById('orange').onclick = function(){
+    //     document.body.style.backgroundColor = 'orange'
+    // }
+    // document.getElementById('green').onclick = function(){
+    //     document.body.style.backgroundColor = 'green'
+    // }
+    //what if you have 500 buttons? Writing again and agian is not good idea. We are breaking DRY(Dont Repeat Yourself) principle
+
+
+    /*Closure concept in practical*/
+
+    //this wont work as desired. So we have to use Closure here
+    // function clickHandler(color){
+    //     document.body.style.backgroundColor = `${color}`
+    // }
+
+    // document.getElementById('orange').onclick = clickHandler("orange")
+
+    //Using Closure
+    function clickHandler(color){
+        return function(){
+            document.body.style.backgroundColor = `${color}`
+        }
+    }
+
+    document.getElementById('orange').onclick = clickHandler('orange')
+    document.getElementById('green').onclick = clickHandler('green')
+
+</script>
+
+</html>

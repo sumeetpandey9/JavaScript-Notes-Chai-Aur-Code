@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>htnml Events </title>
+</head>
+<body style="background-color: #414141; color: aliceblue;">
+    <h2>Amazing image</h2>
+    <div >
+        <ul id="images">
+            <li><img width="200px" id="photoshop" src="https://images.pexels.com/photos/3561339/pexels-photo-3561339.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="photoshop"></li>
+            <li><img width="200px" id="japan" src="https://images.pexels.com/photos/3532553/pexels-photo-3532553.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="river" src="https://images.pexels.com/photos/3532551/pexels-photo-3532551.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="owl" src="https://images.pexels.com/photos/3532552/pexels-photo-3532552.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="" ></li>
+            <li><img width="200px" id="prayer" src="https://images.pexels.com/photos/2522671/pexels-photo-2522671.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><a style="color: aliceblue;" href="https://google.com" id="google">Google</a></li>
+        </ul>
+   </div>
+</body>
+<script>
+    //way-1
+    document.getElementById('owl').onclick = function(){
+        alert("Owl Clicked")
+    }
+
+    //Before this two were also used
+    //attachEvent()
+    //jQuery - on
+
+    //way-2: better way
+    document.getElementById('owl').addEventListener('click', function(){
+        alert("Owl Clicked Again")
+    }, false)
+    //Note: here 3rd parameter is true/false. y default it is false
+
+    document.getElementById('owl').addEventListener('click', function(e){
+        console.log(e)
+    }, false)
+    //Note: These are some of the PointerEvents we get when we console.log(e) . [Study these for interview and projects]
+    //type, timestamp, defaultPrevented
+    //target, toElement, srcElement, currentTarget
+    //clientX, clientY, screenX, screenY
+    //altkey, ctrlkey, shiftkey, keyCode
+
+
+    /* Event Propogation: Bubbling ->  niche se upar jata hai */
+    document.getElementById('images').addEventListener('click', function(e){
+        console.log("clicked inside the ul")
+    }, false)
+
+    document.getElementById('owl').addEventListener('click', function(e){
+        console.log("clicked on owl")
+    }, false)
+    //here first "clicked on owl" then "clicked inside the ul" will print
+
+
+    /* Event Propogation: Capturing -> goes from top to bottom   */
+    document.getElementById('images').addEventListener('click', function(e){
+        console.log("clicked inside the ul")
+    }, true)
+
+    document.getElementById('owl').addEventListener('click', function(e){
+        console.log("clicked on owl")
+    }, true)
+    //here first "clicked inside the ul" then "clicked on owl" will print
+
+    //When we want to prevent Bubbling we use e.stopPropogation()
+    document.getElementById('images').addEventListener('click', function(e){
+        console.log("clicked inside the ul")
+    }, false)
+
+    document.getElementById('owl').addEventListener('click', function(e){
+        console.log("clicked on owl")
+        e.stopPropagation()
+    }, false)
+
+    //to prevent Capturing
+    document.getElementById('images').addEventListener('click', function(e){
+        console.log("clicked inside the ul")
+        e.stopPropagation()
+    }, true)
+
+    document.getElementById('owl').addEventListener('click', function(e){
+        console.log("clicked on owl")
+    }, true)
+
+
+    //to prevent default behaviour we use e.preventDefault()
+    document.getElementById('google').addEventListener('click', function(e){
+        e.preventDefault() //to prevent default behaviour
+        e.stopPropagation()//to stop Bubbling
+        console.log("clicked on google")
+    }, false)
+
+
+    /* Todo: to make images disapper when we click on image*/
+
+    document.querySelector('#images').addEventListener('click', function(e){
+        console.log(e.target.parentNode)
+        let removeIt = e.target.parentNode
+        removeIt.remove() //method-1
+        //removeIt.parentNode.removeChild(removeIt) //method-2
+    }, false)
+
+    //Note: Problem with above code is when we click on 'li', ul gets slected and it removes all li. --> this is called Event Spill-Over
+
+    //Fix of Event Spill-Over issue
+    document.querySelector('#images').addEventListener('click', function(e){
+        console.log(e.target.tagName)
+        if(e.target.tagName === 'IMG'){
+            console.log(e.target.id)
+            let removeIt = e.target.parentNode
+            removeIt.remove()
+        } 
+    }, false)
+
+</script>
+</html>
